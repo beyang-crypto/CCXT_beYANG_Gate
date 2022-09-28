@@ -1,7 +1,7 @@
 package main
 
 import (
-	spotAndMargin "ccxt_beyang_gate/gate/spotAndMargin/v4/rest"
+	spotAndMargin "github.com/TestingAccMar/CCXT_beYANG_Gate/gate/spotAndMargin/v4/rest"
 )
 
 func main() {

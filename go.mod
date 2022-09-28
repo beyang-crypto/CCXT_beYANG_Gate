@@ -1,4 +1,4 @@
-module ccxt_beyang_gate
+module github.com/TestingAccMar/CCXT_beYANG_Gate
 
 go 1.18
 
