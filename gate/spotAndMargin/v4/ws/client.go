@@ -47,7 +47,7 @@ type GateWS struct {
 	emitter *emission.Emitter
 }
 
-func GetPair(coin1 string, coin2 string) string {
+func (b *GateWS)  GetPair(coin1 string, coin2 string) string {
 	return strings.ToUpper(coin1 + "_" + coin2)
 }
 
