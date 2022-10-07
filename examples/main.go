@@ -1,30 +1,28 @@
 package main
 
 import (
-	spotAndMargin "github.com/TestingAccMar/CCXT_beYANG_Gate/gate/spotAndMargin/v4/rest"
+	"log"
+
+	spotAndMarginWs "github.com/TestingAccMar/CCXT_beYANG_Gate/gate/spotAndMargin/v4/ws"
 )
 
 func main() {
-	cfg := &spotAndMargin.Configuration{
-		Addr:      spotAndMargin.RestURL,
-		ApiKey:    "3ee19c6d0450057413809ea5cea755da",
-		SecretKey: "c808a97d1ed945759c9492aa5901660e1e1c1a6d033ca429c7fa3c201938042e",
-		DebugMode: true,
+	cfg := &spotAndMarginWs.Configuration{
+		Addr:      spotAndMarginWs.HostWebsocketURL,
+		ApiKey:    "",
+		SecretKey: "",
+		DebugMode: false,
 	}
-	b := spotAndMargin.New(cfg)
+	b := spotAndMarginWs.New(cfg)
 
-	b.GetBalance()
-	//a.Auth()
+	b.Start()
 
-	//a.Start()
-	// b.Start()
+	pair1 := b.GetPair("BTC", "USDT")
+	pair2 := b.GetPair("eth", "USDT")
 
-	// pair := spotAndMargin.GetPair("BTC", "USDT")
+	b.Subscribe(spotAndMarginWs.ChannelTicker, []string{pair1, pair2})
 
-	// b.Subscribe(spotAndMargin.ChannelTicker, pair)
-	//b.SubscribeOnBalance(spotAndMargin.ChannelBalances)
-
-	// b.On(spotAndMargin.ChannelTicker, handleBestBidPrice)
+	b.On(spotAndMarginWs.ChannelTicker, handleBestBidPrice)
 
 	//	не дает прекратить работу программы
 	forever := make(chan struct{})
@@ -35,9 +33,9 @@ func main() {
 // 	log.Printf("Bybit BookTicker  %s: %v", symbol, data)
 // }
 
-// func handleBestBidPrice(symbol string, data spotAndMargin.Tickers) {
-// 	log.Printf("Bybit BookTicker  %s: BestBidPrice : %s", symbol, data.Result.HighestBid)
-// }
+func handleBestBidPrice(symbol string, data spotAndMarginWs.Tickers) {
+	log.Printf("Bybit BookTicker  %s: BestBidPrice : %s", symbol, data.Result.HighestBid)
+}
 
 // func handleWalletBalanceCoin(data spotAndMargin.WalletBalance) {
 // 	for _, coin := range data.Result {
