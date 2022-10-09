@@ -288,10 +288,12 @@ func (b *GateWS) messageHandler(data []byte) {
 	case "pong":
 		//	ничего не надо
 	case "tickers":
-		var ticker Tickers
-		err := json.Unmarshal(data, &ticker)
-		if err != nil {
-			log.Printf(`
+		event, _ := jsonparser.GetString(data, "event")
+		if event == "update" {
+			var ticker Tickers
+			err := json.Unmarshal(data, &ticker)
+			if err != nil {
+				log.Printf(`
 				{
 					"Status" : "Error",
 					"Path to file" : "CCXT_beYANG_Gate/gate/spotAndMargin/v4/ws",
@@ -302,9 +304,10 @@ func (b *GateWS) messageHandler(data []byte) {
 					"Comment" : %s to BookTicker struct,
 					"Error" : %s
 				}`, string(data), err)
-			log.Fatal()
+				log.Fatal()
+			}
+			b.processTicker("Gate", ticker.Result.CurrencyPair, ticker)
 		}
-		b.processTicker("Gate", ticker.Result.CurrencyPair, ticker)
 	case "balances":
 		event, _ := jsonparser.GetString(data, "event")
 		if event != "subscribe" {
