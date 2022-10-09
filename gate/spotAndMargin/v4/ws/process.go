@@ -1,9 +1,9 @@
 package spotandmargin
 
-func (b *GateWS) processTicker(symbol string, data Tickers) {
-	b.Emit(ChannelTicker, symbol, data)
+func (b *GateWS) processTicker(name string, symbol string, data Tickers) {
+	b.Emit(ChannelTicker, name, symbol, data)
 }
 
-func (b *GateWS) processWalletBalance(symbol string, data WalletBalance) {
-	b.Emit(ChannelBalances, data)
+func (b *GateWS) processWalletBalance(name string, symbol string, data WalletBalance) {
+	b.Emit(ChannelBalances, name, data)
 }

@@ -11,7 +11,7 @@ func main() {
 		Addr:      spotAndMarginWs.HostWebsocketURL,
 		ApiKey:    "",
 		SecretKey: "",
-		DebugMode: false,
+		DebugMode: true,
 	}
 	b := spotAndMarginWs.New(cfg)
 
@@ -33,8 +33,8 @@ func main() {
 // 	log.Printf("Bybit BookTicker  %s: %v", symbol, data)
 // }
 
-func handleBestBidPrice(symbol string, data spotAndMarginWs.Tickers) {
-	log.Printf("Bybit BookTicker  %s: BestBidPrice : %s", symbol, data.Result.HighestBid)
+func handleBestBidPrice(name string, symbol string, data spotAndMarginWs.Tickers) {
+	log.Printf("%s BookTicker  %s: BestBidPrice : %s", name, symbol, data.Result.HighestBid)
 }
 
 // func handleWalletBalanceCoin(data spotAndMargin.WalletBalance) {

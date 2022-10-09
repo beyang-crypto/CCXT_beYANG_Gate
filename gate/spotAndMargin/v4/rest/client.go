@@ -77,7 +77,7 @@ func (ex *GateRest) GetBalance() interface{} {
 		log.Fatalln(err)
 	}
 	if ex.cfg.DebugMode {
-		log.Printf("FTX WalletBalance %v", string(data))
+		log.Printf("STATUS: DEBUG\tEXCHANGE: Gate\tAPI: Rest\tGate WalletDeposits %v", string(data))
 	}
 
 	var walletBalance WalletDeposits
@@ -86,12 +86,12 @@ func (ex *GateRest) GetBalance() interface{} {
 		log.Printf(`
 			{
 				"Status" : "Error",
-				"Path to file" : "CCXT_BEYANG_BYBIT/spot/v3",
-				"File": "api.go",
-				"Functions" : "(ex *HuobiWS) GetBalance() (WalletBalance)",
+				"Path to file" : "CCXT_BEYANG_Gate/gate/spotAndMargin/v4/rest",
+				"File": "client.go",
+				"Functions" : "ex *GateRest) GetBalance() interface{}",
 				"Function where err" : "json.Unmarshal",
-				"Exchange" : "Huobi",
-				"Comment" : %s to WalletBalance struct,
+				"Exchange" : "Gate",
+				"Comment" : %s to WalletDeposits struct,
 				"Error" : %s
 			}`, string(data), err)
 		log.Fatal()

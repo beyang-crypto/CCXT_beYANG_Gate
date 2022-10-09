@@ -86,7 +86,7 @@ func (b *GateWS) Subscribe1(channel string) {
 	}
 	b.subscribeCmds = append(b.subscribeCmds, cmd)
 	if b.cfg.DebugMode {
-		log.Printf("Создание json сообщения на подписку part 1")
+		log.Printf("STATUS: DEBUG\tEXCHANGE: Gate\tAPI: WS\tСоздание json сообщения на подписку part 1")
 	}
 	b.SendCmd(cmd)
 }
@@ -107,7 +107,7 @@ func (b *GateWS) Subscribe2(channel string, coins []string) {
 	}
 	b.subscribeCmds = append(b.subscribeCmds, cmd)
 	if b.cfg.DebugMode {
-		log.Printf("Создание json сообщения на подписку part 1")
+		log.Printf("STATUS: DEBUG\tEXCHANGE: Gate\tAPI: WS\tСоздание json сообщения на подписку part 1")
 	}
 	b.SendCmd(cmd)
 }
@@ -137,7 +137,7 @@ func (b *GateWS) SendCmd(cmd Cmd) {
 		log.Fatal()
 	}
 	if b.cfg.DebugMode {
-		log.Printf("Создание json сообщения на подписку part 2")
+		log.Printf("STATUS: DEBUG\tEXCHANGE: Gate\tAPI: WS\tСоздание json сообщения на подписку part 2")
 	}
 	b.Send(string(data))
 }
@@ -165,7 +165,7 @@ func (b *GateWS) Send(msg string) (err error) {
 		}
 	}()
 	if b.cfg.DebugMode {
-		log.Printf("Отправка сообщения на сервер. текст сообщения:%s", msg)
+		log.Printf("STATUS: DEBUG\tEXCHANGE: Gate\tAPI: WS\tОтправка сообщения на сервер. текст сообщения:%s", msg)
 	}
 
 	err = b.conn.WriteMessage(websocket.TextMessage, []byte(msg))
@@ -175,7 +175,7 @@ func (b *GateWS) Send(msg string) (err error) {
 // подключение к серверу и постоянное чтение приходящих ответов
 func (b *GateWS) Start() error {
 	if b.cfg.DebugMode {
-		log.Printf("Начало подключения к серверу")
+		log.Printf("STATUS: DEBUG\tEXCHANGE: Gate\tAPI: WS\tНачало подключения к серверу")
 	}
 	b.connect()
 
@@ -279,7 +279,7 @@ func (b *GateWS) ping() {
 
 func (b *GateWS) messageHandler(data []byte) {
 	if b.cfg.DebugMode {
-		log.Printf("GateWs %v", string(data))
+		log.Printf("STATUS: DEBUG\tEXCHANGE: Gate\tAPI: WS\tGateWs %v", string(data))
 	}
 
 	channel, _ := jsonparser.GetString(data, "channel")
@@ -304,7 +304,7 @@ func (b *GateWS) messageHandler(data []byte) {
 				}`, string(data), err)
 			log.Fatal()
 		}
-		b.processTicker(ticker.Result.CurrencyPair, ticker)
+		b.processTicker("Gate", ticker.Result.CurrencyPair, ticker)
 	case "balances":
 		event, _ := jsonparser.GetString(data, "event")
 		if event != "subscribe" {
@@ -324,7 +324,7 @@ func (b *GateWS) messageHandler(data []byte) {
 					}`, string(data), err)
 				log.Fatal()
 			}
-			b.processWalletBalance(channelArr[1], walletBalance)
+			b.processWalletBalance("Gate", channelArr[1], walletBalance)
 		}
 	default:
 		log.Printf(`
